@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 /**
  * @author: pesehr.
  */
@@ -14,12 +15,12 @@ public class Trie {
   Node root ;
 
   public Trie() {
-    this.root = new Node(0,null,null,null);
+    this.root = new Node(0,null);
   }
 
 
   public Trie(HashMap<IP, String> ips) {
-    this.root = new Node(0,null,null,null);
+    this.root = new Node(0,"255.255.255.255");
     makeTria(ips);
   }
 
@@ -55,5 +56,12 @@ public class Trie {
 
   public Node add(String binary) {
     return root.find(binary,true);
+  }
+
+
+  public ArrayList<Node> findAll(int start) {
+    ArrayList<Node> nodes = new ArrayList<Node>();
+     nodes.addAll(root.findAll(start));
+     return  nodes;
   }
 }
