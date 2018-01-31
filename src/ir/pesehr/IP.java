@@ -10,7 +10,7 @@ public class IP {
   private String mask;
   private String ip;
 
-  IP(String ip) {
+  public IP(String ip) {
     this.fullIp = ip;
   }
 

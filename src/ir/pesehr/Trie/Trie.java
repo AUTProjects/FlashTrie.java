@@ -12,19 +12,19 @@ import java.util.Map;
  */
 public class Trie {
 
-  Node root ;
+  Node root;
 
   public Trie() {
-    this.root = new Node(0,null);
+    this.root = new Node(0, null);
   }
 
 
   public Trie(HashMap<IP, String> ips) {
-    this.root = new Node(0,"255.255.255.255");
+    this.root = new Node(0, "255.255.255.255");
     makeTria(ips);
   }
 
-  public void makeTria(HashMap<IP, String> ips){
+  public void makeTria(HashMap<IP, String> ips) {
     for (Map.Entry<IP, String> entry : ips.entrySet()) {
       IP key = entry.getKey();
       String value = entry.getValue();
@@ -50,18 +50,20 @@ public class Trie {
   }
 
   public Node find(String binary) {
-    return root.find(binary,false);
+    return root.find(binary, false);
   }
 
 
   public Node add(String binary) {
-    return root.find(binary,true);
+    return root.find(binary, true);
   }
 
 
-  public ArrayList<Node> findAll(int start) {
+  public ArrayList<Node> findAll(int start, Node root) {
+    if (root == null)
+      root = this.root;
     ArrayList<Node> nodes = new ArrayList<Node>();
-     nodes.addAll(root.findAll(start));
-     return  nodes;
+    nodes.addAll(root.findAll(start));
+    return nodes;
   }
 }

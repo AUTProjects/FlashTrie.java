@@ -7,8 +7,10 @@ import java.util.HashMap;
 public class Main {
 
   public static void main(String[] args) {
-    HashMap<IP, String> ips = Reader.read(100000);
+    HashMap<IP, String> ips = Reader.read(10000);
     FLashTrie trie = new FLashTrie(ips);
+
+
   }
 
 }
