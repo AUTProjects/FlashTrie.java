@@ -14,22 +14,44 @@ import java.util.Iterator;
 public class FLashTrie {
   Trie trie;
   HashMap<Node, FlashNode> tries;
+  int compsize = 4;
 
   public FLashTrie(HashMap<ir.pesehr.IP, String> ips) {
     trie = new Trie(ips);
     tries = new HashMap<>();
-    IP ip = new IP("0.0.0.0");
-    makePCTrie(16, 32, 4);
-    find(ip.getBinary());
-
+//
+    makePCTrie(16, 32, compsize);
+//    find(ip.getBinary());
     // trie.print();
   }
 
-  public void find(String ip){
 
-    Node level1 = trie.find(ip.substring(0,16));
+  public String findOne(String address) {
+    IP ip = new IP(address);
+    Node level1 = trie.find(ip.getBinary().substring(0, 16));
     FlashNode level2 = tries.get(level1);
+    if (level2 == null) {
+      System.out.println("next hop is: " + level1.getPrefix());
+      return level1.getPrefix();
+    } else {
+      String level3 = level2.lookup(ip.getBinary().substring(17, 32), compsize);
+      System.out.println("next hop is: " + level3);
+      return level3;
+    }
+  }
 
+
+  public String find(String ip) {
+
+    Node level1 = trie.find(ip.substring(0, 16));
+    FlashNode level2 = tries.get(level1);
+    if (level2 == null)
+//      System.out.println("next hop is: " + level1.getPrefix());
+      return level1.getPrefix();
+    else {
+      String level3 = level2.lookup(ip.substring(17, 32), compsize);
+      return level3;
+    }
   }
 
   public void makePCTrie(int from, int to, int compSize) {
@@ -49,11 +71,11 @@ public class FLashTrie {
       FlashNode newFlashNode;
       ArrayList<FlashNode> newFlashNodes = new ArrayList<FlashNode>();
       for (int c = (int) (Math.log(compSize) / Math.log(2) + 1e-10); c < to; c++) {
-        ArrayList<Node> nodes = trie.findAll(c+ rootNode.getLevel() + 1, rootNode);
+        ArrayList<Node> nodes = trie.findAll(c + rootNode.getLevel() + 1, rootNode);
 
         for (int compIndex = 0; compIndex < nodes.size(); compIndex += compSize) {
           newFlashNode = new FlashNode(c);
-          for (int prefixIndex = 0; prefixIndex < compSize; prefixIndex++)
+          for (int prefixIndex = compSize - 1; prefixIndex >= 0; prefixIndex--)
             newFlashNode.addPrefix(nodes.get(compIndex + prefixIndex).getPrefix());
           newFlashNodes.add(newFlashNode);
 
@@ -119,7 +141,7 @@ public class FLashTrie {
       while (temp.size() != 0) {
         ArrayList<FlashNode> temp2 = new ArrayList<FlashNode>();
         for (FlashNode node : temp) {
-          if(node == null)
+          if (node == null)
             break;
           System.out.print("level " + node.getLevel() + " prefix:" + node.getPrefix() + "valid: " + node.valid + " --- ");
           if (node.leftNode != null)

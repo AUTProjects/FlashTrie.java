@@ -28,17 +28,17 @@ public class Node {
       if (rightNode == null)
         if (add) {
           rightNode = new Node(level + 1, prefix);
-          return rightNode.find(binary.substring(1), true);
+          return rightNode.find(binary.substring(1), add);
         } else
           return this;
-      else return rightNode.find(binary.substring(1), true);
+      else return rightNode.find(binary.substring(1), add);
     else if (leftNode == null)
       if (add) {
         leftNode = new Node(level + 1, prefix);
-        return leftNode.find(binary.substring(1), true);
+        return leftNode.find(binary.substring(1), add);
       } else
         return this;
-    else return leftNode.find(binary.substring(1), true);
+    else return leftNode.find(binary.substring(1), add);
   }
 
   @Override

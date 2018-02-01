@@ -1,6 +1,7 @@
 package ir.pesehr.FlashTrie;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author: pesehr.
@@ -34,8 +35,8 @@ public class FlashNode {
   }
 
 
-  public void addPrefix(String prifix) {
-    prefixes.add(prifix);
+  public void addPrefix(String prefix) {
+    prefixes.add(prefix);
   }
 
   public void setLeft(boolean left) {
@@ -57,4 +58,14 @@ public class FlashNode {
   public ArrayList<String> getPrefix() {
     return prefixes;
   }
+
+  public String lookup(String ip, int compsize) {
+    if (ip.charAt(0) == '1' && leftNode != null)
+      return leftNode.lookup(ip.substring(1, ip.length()), compsize);
+    else if (ip.charAt(0) == '0' && rightNode != null)
+      return rightNode.lookup(ip.substring(1, ip.length()), compsize);
+    else
+      return prefixes.get(Integer.parseInt(ip.substring(0, compsize/2), 2));
+  }
+
 }
